@@ -1,0 +1,97 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212200e722ff27d6b03bf88eabd9ef746933317315799e4affad41b5c5350ad8c619064736f6c634300080e0033",
+    "sourceMap": "321:274:56:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x6080604052600080fdfea26469706673582212200e722ff27d6b03bf88eabd9ef746933317315799e4affad41b5c5350ad8c619064736f6c634300080e0033",
+    "sourceMap": "321:274:56:-:0;;;;;",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {},
+  "ast": {
+    "absolutePath": "node_modules/@gnosis.pm/safe-contracts/contracts/common/Singleton.sol",
+    "id": 56110,
+    "exportedSymbols": {
+      "Singleton": [
+        56109
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "42:554:56",
+    "nodes": [
+      {
+        "id": 56105,
+        "nodeType": "PragmaDirective",
+        "src": "42:31:56",
+        "literals": [
+          "solidity",
+          ">=",
+          "0.7",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ]
+      },
+      {
+        "id": 56109,
+        "nodeType": "ContractDefinition",
+        "src": "321:274:56",
+        "nodes": [
+          {
+            "id": 56108,
+            "nodeType": "VariableDeclaration",
+            "src": "567:25:56",
+            "constant": false,
+            "mutability": "mutable",
+            "name": "singleton",
+            "nameLocation": "583:9:56",
+            "scope": 56109,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 56107,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "567:7:56",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "visibility": "private"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "Singleton",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 56106,
+          "nodeType": "StructuredDocumentation",
+          "src": "75:246:56",
+          "text": "@title Singleton - Base for singleton contracts (should always be first super contract)\n         This contract is tightly coupled to our proxy contract (see `proxies/GnosisSafeProxy.sol`)\n @author Richard Meissner - <richard@gnosis.io>"
+        },
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          56109
+        ],
+        "name": "Singleton",
+        "nameLocation": "330:9:56",
+        "scope": 56110,
+        "usedErrors": []
+      }
+    ],
+    "license": "LGPL-3.0-only"
+  },
+  "id": 56
+}

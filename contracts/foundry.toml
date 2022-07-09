@@ -1,0 +1,23 @@
+
+[default]
+
+src = 'contracts'
+
+out = 'out'
+
+sparse = true
+
+libs = ['lib', 'node_modules']
+
+test = 'contracts/foundry'
+
+optimizer_runs = 15000
+
+fuzz_runs = 7500
+
+remappings = [
+    'ds-test=lib/ds-test/src/',
+    'forge-std=lib/forge-std/src/',
+]
+
+# See more config options https://github.com/gakonst/foundry/tree/master/config

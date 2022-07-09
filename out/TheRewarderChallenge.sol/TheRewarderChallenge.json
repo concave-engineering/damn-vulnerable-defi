@@ -1,0 +1,19 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "contracts/foundry/TheRewarderChallenge.sol",
+    "id": 1689,
+    "exportedSymbols": {},
+    "nodeType": "SourceUnit",
+    "src": "0:0:9"
+  },
+  "id": 9
+}
